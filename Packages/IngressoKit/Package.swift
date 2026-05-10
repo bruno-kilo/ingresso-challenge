@@ -39,8 +39,7 @@ let package = Package(
         // MARK: - UI (Domain + Presentation + Infrastructure)
         .target(
                     name: "IngressoUI",
-                    dependencies: ["IngressoDomain", "IngressoPresentation", "IngressoInfrastructure"],
-                    resources: [.process("Resources")]
+                    dependencies: ["IngressoDomain", "IngressoPresentation", "IngressoInfrastructure"]
                 ),
 
         // MARK: - Mock (all layers)
@@ -55,11 +54,7 @@ let package = Package(
         ),
 
         // MARK: - Tests
-        .testTarget(
-            name: "IngressoDomainTests",
-            dependencies: ["IngressoDomain", "IngressoMock"]
-        ),
-        .testTarget(
+.testTarget(
             name: "IngressoDataTests",
             dependencies: ["IngressoData", "IngressoDomain", "IngressoInfrastructure", "IngressoMock"]
         ),

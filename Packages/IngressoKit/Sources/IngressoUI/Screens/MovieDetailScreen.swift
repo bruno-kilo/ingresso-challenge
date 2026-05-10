@@ -38,7 +38,7 @@ public struct MovieDetailScreen: View {
                     }
                 } label: {
                     Image(systemName: favoritesViewModel.isFavorite(movie) ? "heart.fill" : "heart")
-                        .foregroundStyle(favoritesViewModel.isFavorite(movie) ? .red : .secondary)
+                        .foregroundStyle(favoritesViewModel.isFavorite(movie) ? IngressoColors.destructive : .secondary)
                         .symbolEffect(.bounce, value: favoritesViewModel.isFavorite(movie))
                 }
             }

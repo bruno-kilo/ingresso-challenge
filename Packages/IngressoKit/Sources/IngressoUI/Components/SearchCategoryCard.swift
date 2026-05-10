@@ -32,12 +32,12 @@ enum SearchCategory: String, CaseIterable, Identifiable {
 
     var color: Color {
         switch self {
-        case .action: .red
-        case .comedy: .yellow
+        case .action: IngressoColors.destructive
+        case .comedy: IngressoColors.preSale
         case .drama: .blue
         case .horror: .purple
-        case .animation: .orange
-        case .adventure: .green
+        case .animation: IngressoColors.warning
+        case .adventure: IngressoColors.success
         case .thriller: .indigo
         case .romance: .pink
         case .scifi: .cyan

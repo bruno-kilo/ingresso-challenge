@@ -5,7 +5,7 @@ public actor IngressoHTTPClient: HTTPClientProtocol {
     private let baseURL: URL
     private let session: URLSession
     private let decoder: JSONDecoder
-    private let logger = Logger(subsystem: "com.escaleira.Ingresso", category: "HTTP")
+    private let logger = Logger(subsystem: "com.brunosantos.Ingresso", category: "HTTP")
     private let maxRetries: Int
 
     public init(

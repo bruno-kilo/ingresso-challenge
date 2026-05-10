@@ -7,4 +7,7 @@
    <FileRef
       location = "container:Packages/IngressoKit">
    </FileRef>
+   <FileRef
+      location = "group:Packages/IngressoKit/Tests/Ingresso.xctestplan">
+   </FileRef>
 </Workspace>

@@ -1,0 +1,62 @@
+{
+  "configurations" : [
+    {
+      "id" : "4D231FD4-673C-42CA-95A9-6DDF1BD68220",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:..\/..\/Packages\/IngressoKit",
+          "identifier" : "IngressoInfrastructure",
+          "name" : "IngressoInfrastructure"
+        },
+        {
+          "containerPath" : "container:..\/..\/Packages\/IngressoKit",
+          "identifier" : "IngressoData",
+          "name" : "IngressoData"
+        },
+        {
+          "containerPath" : "container:..\/..\/Packages\/IngressoKit",
+          "identifier" : "IngressoPresentation",
+          "name" : "IngressoPresentation"
+        }
+      ]
+    },
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Ingresso.xcodeproj",
+      "identifier" : "FA1061DE2FB0088C005849A2",
+      "name" : "Ingresso"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/..\/Packages\/IngressoKit",
+        "identifier" : "IngressoPresentationTests",
+        "name" : "IngressoPresentationTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/..\/Packages\/IngressoKit",
+        "identifier" : "IngressoInfrastructureTests",
+        "name" : "IngressoInfrastructureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/..\/Packages\/IngressoKit",
+        "identifier" : "IngressoDataTests",
+        "name" : "IngressoDataTests"
+      }
+    }
+  ],
+  "version" : 1
+}

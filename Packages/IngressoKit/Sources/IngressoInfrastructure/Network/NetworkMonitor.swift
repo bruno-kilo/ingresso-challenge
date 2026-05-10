@@ -11,7 +11,7 @@ public final class NetworkMonitor: NetworkMonitorProtocol, @unchecked Sendable {
     public private(set) var isConnected: Bool = true
 
     private let monitor: NWPathMonitor
-    private let queue = DispatchQueue(label: "com.escaleira.Ingresso.NetworkMonitor")
+    private let queue = DispatchQueue(label: "com.brunosantos.Ingresso.NetworkMonitor")
 
     public init() {
         self.monitor = NWPathMonitor()

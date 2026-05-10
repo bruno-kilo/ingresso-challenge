@@ -14,10 +14,12 @@ public final class SettingsViewModel {
         self.cacheRepository = cacheRepository
     }
 
-    public func loadCacheSize() async {
-        let movies = (try? await cacheRepository.loadCachedMovies()) ?? []
-        let data = try? JSONEncoder().encode(movies.map(CodableMovie.init))
-        cacheByteCount = Int64(data?.count ?? 0)
+    public func loadCacheSize() {
+        Task {
+            let movies = (try? await cacheRepository.loadCachedMovies()) ?? []
+            let data = try? JSONEncoder().encode(movies.map(CodableMovie.init))
+            cacheByteCount = Int64(data?.count ?? 0)
+        }
     }
 
     public func clearCache() async {

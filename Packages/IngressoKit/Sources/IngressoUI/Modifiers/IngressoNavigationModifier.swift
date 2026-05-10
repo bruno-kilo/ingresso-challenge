@@ -18,15 +18,6 @@ struct IngressoNavigationModifier: ViewModifier {
                 .environment(router)
                 .environment(favoritesViewModel)
             }
-            #if os(iOS)
-            .fullScreenCover(item: Bindable(router).fullScreenCover) { route in
-                NavigationStack {
-                    destination(for: route)
-                }
-                .environment(router)
-                .environment(favoritesViewModel)
-            }
-            #endif
     }
 
     @ViewBuilder
