@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FAA164162FB0F4DA004CC52E /* IngressoData in Frameworks */ = {isa = PBXBuildFile; productRef = FAA164152FB0F4DA004CC52E /* IngressoData */; };
+		FAA164182FB0F4DE004CC52E /* IngressoDomain in Frameworks */ = {isa = PBXBuildFile; productRef = FAA164172FB0F4DE004CC52E /* IngressoDomain */; };
+		FAA1641A2FB0F4EC004CC52E /* IngressoUI in Frameworks */ = {isa = PBXBuildFile; productRef = FAA164192FB0F4EC004CC52E /* IngressoUI */; };
+		FAA1641C2FB0F4F6004CC52E /* IngressoPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = FAA1641B2FB0F4F6004CC52E /* IngressoPresentation */; };
+		FAA1641E2FB0F4F8004CC52E /* IngressoInfrastructure in Frameworks */ = {isa = PBXBuildFile; productRef = FAA1641D2FB0F4F8004CC52E /* IngressoInfrastructure */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		FA1061DF2FB0088C005849A2 /* Ingresso.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ingresso.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +31,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAA1641E2FB0F4F8004CC52E /* IngressoInfrastructure in Frameworks */,
+				FAA164182FB0F4DE004CC52E /* IngressoDomain in Frameworks */,
+				FAA164162FB0F4DA004CC52E /* IngressoData in Frameworks */,
+				FAA1641C2FB0F4F6004CC52E /* IngressoPresentation in Frameworks */,
+				FAA1641A2FB0F4EC004CC52E /* IngressoUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				FA1061E12FB0088C005849A2 /* Ingresso */,
+				FAA164142FB0F4DA004CC52E /* Frameworks */,
 				FA1061E02FB0088C005849A2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +57,13 @@
 				FA1061DF2FB0088C005849A2 /* Ingresso.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FAA164142FB0F4DA004CC52E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +86,11 @@
 			);
 			name = Ingresso;
 			packageProductDependencies = (
+				FAA164152FB0F4DA004CC52E /* IngressoData */,
+				FAA164172FB0F4DE004CC52E /* IngressoDomain */,
+				FAA164192FB0F4EC004CC52E /* IngressoUI */,
+				FAA1641B2FB0F4F6004CC52E /* IngressoPresentation */,
+				FAA1641D2FB0F4F8004CC52E /* IngressoInfrastructure */,
 			);
 			productName = Ingresso;
 			productReference = FA1061DF2FB0088C005849A2 /* Ingresso.app */;
@@ -328,6 +354,29 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FAA164152FB0F4DA004CC52E /* IngressoData */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = IngressoData;
+		};
+		FAA164172FB0F4DE004CC52E /* IngressoDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = IngressoDomain;
+		};
+		FAA164192FB0F4EC004CC52E /* IngressoUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = IngressoUI;
+		};
+		FAA1641B2FB0F4F6004CC52E /* IngressoPresentation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = IngressoPresentation;
+		};
+		FAA1641D2FB0F4F8004CC52E /* IngressoInfrastructure */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = IngressoInfrastructure;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FA1061D72FB0088C005849A2 /* Project object */;
 }
