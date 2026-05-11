@@ -6,42 +6,55 @@ import IngressoInfrastructure
 import IngressoPresentation
 
 @MainActor
-struct IngressoDependencyContainer: ViewModelFactoryProtocol {
-    private let httpClient: IngressoHTTPClient
-    private let movieRepository: RemoteMovieRepository
-    private let favoritesRepository: SwiftDataFavoritesRepository
-    private let movieCacheRepository: SwiftDataMovieCacheRepository
+struct IngressoDependencyContainer {
+    private let infrastructureFactory = IngressoInfrastructureFactory()
+    private let dataFactory = IngressoDataFactory()
+    private let presentationFactory = IngressoPresentationFactory()
+
+    private let httpClient: HTTPClientProtocol
+    private let movieRepository: MovieRepositoryProtocol
+    private let favoritesRepository: FavoritesRepositoryProtocol
+    private let movieCacheRepository: MovieCacheRepositoryProtocol
+    private let sortStrategy: MovieSortStrategyProtocol
 
     init(modelContainer: ModelContainer) {
-        let baseURL = URL(string: "https://api-content.ingresso.com")!
         let configuration = URLSessionConfiguration.default
         configuration.urlCache = URLCache(
             memoryCapacity: 20 * 1024 * 1024,
             diskCapacity: 50 * 1024 * 1024
         )
         configuration.requestCachePolicy = .returnCacheDataElseLoad
-        self.httpClient = IngressoHTTPClient(baseURL: baseURL, configuration: configuration)
-        self.movieRepository = RemoteMovieRepository(client: httpClient)
-        self.favoritesRepository = SwiftDataFavoritesRepository(modelContainer: modelContainer)
-        self.movieCacheRepository = SwiftDataMovieCacheRepository(modelContainer: modelContainer)
+
+        self.httpClient = infrastructureFactory.makeClient(
+            baseURL: URL(string: "https://api-content.ingresso.com"),
+            configuration: configuration
+        )
+        self.movieRepository = dataFactory.makeRemoteMovieRepository(client: httpClient)
+        self.favoritesRepository = dataFactory.makeFavoritesRepository(modelContainer: modelContainer)
+        self.movieCacheRepository = dataFactory.makeMovieCacheRepository(modelContainer: modelContainer)
+        self.sortStrategy = dataFactory.makePremiereDateSortStrategy()
     }
 
     func makeMovieListViewModel() -> MovieListViewModel {
-        MovieListViewModel(
-            fetchMoviesUseCase: FetchMoviesUseCase(repository: movieRepository, cache: movieCacheRepository),
-            searchMoviesUseCase: SearchMoviesUseCase()
+        presentationFactory.makeMovieListViewModel(
+            fetchMoviesUseCase: dataFactory.makeFetchMoviesUseCase(
+                repository: movieRepository,
+                cache: movieCacheRepository,
+                sortStrategy: sortStrategy
+            ),
+            searchMoviesUseCase: dataFactory.makeSearchMoviesUseCase()
         )
     }
 
     func makeMovieDetailViewModel(movie: IngressoMovie) -> MovieDetailViewModel {
-        MovieDetailViewModel(movie: movie)
+        presentationFactory.makeMovieDetailViewModel(movie: movie)
     }
 
     func makeFavoritesViewModel() -> FavoritesViewModel {
-        FavoritesViewModel(repository: favoritesRepository)
+        presentationFactory.makeFavoritesViewModel(repository: favoritesRepository)
     }
 
     func makeSettingsViewModel() -> SettingsViewModel {
-        SettingsViewModel(cacheRepository: movieCacheRepository)
+        presentationFactory.makeSettingsViewModel(cacheRepository: movieCacheRepository)
     }
 }

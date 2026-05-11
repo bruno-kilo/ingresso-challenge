@@ -6,7 +6,7 @@ import IngressoPresentation
 public struct PreSaleScreen: View {
     @Bindable var viewModel: MovieListViewModel
 
-    public init(viewModel: MovieListViewModel) {
+    init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
     }
 

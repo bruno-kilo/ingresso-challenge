@@ -6,7 +6,7 @@ public struct MovieDetailScreen: View {
     let viewModel: MovieDetailViewModel
     @Environment(FavoritesViewModel.self) private var favoritesViewModel
 
-    public init(viewModel: MovieDetailViewModel) {
+    init(viewModel: MovieDetailViewModel) {
         self.viewModel = viewModel
     }
 

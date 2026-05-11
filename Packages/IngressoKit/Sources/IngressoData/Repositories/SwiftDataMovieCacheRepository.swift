@@ -4,15 +4,15 @@ import SwiftData
 import IngressoDomain
 import IngressoInfrastructure
 
-public final class SwiftDataMovieCacheRepository: MovieCacheRepositoryProtocol, @unchecked Sendable {
+final class SwiftDataMovieCacheRepository: MovieCacheRepositoryProtocol, @unchecked Sendable {
     private let modelContainer: ModelContainer
     private let logger = Logger(subsystem: "com.brunosantos.Ingresso", category: "Cache")
 
-    public init(modelContainer: ModelContainer) {
+    init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
     }
 
-    public func saveMovies(_ movies: [IngressoMovie]) async throws {
+    func saveMovies(_ movies: [IngressoMovie]) async throws {
         let context = ModelContext(modelContainer)
 
         let existingDescriptor = FetchDescriptor<CachedMovieEntity>()
@@ -39,7 +39,7 @@ public final class SwiftDataMovieCacheRepository: MovieCacheRepositoryProtocol, 
         logger.info("Cache atualizado: \(movies.count) filmes")
     }
 
-    public func loadCachedMovies() async throws -> [IngressoMovie] {
+    func loadCachedMovies() async throws -> [IngressoMovie] {
         let context = ModelContext(modelContainer)
         let descriptor = FetchDescriptor<CachedMovieEntity>(
             sortBy: [SortDescriptor(\.cachedAt)]
@@ -48,7 +48,7 @@ public final class SwiftDataMovieCacheRepository: MovieCacheRepositoryProtocol, 
         return entities.map(CachedMovieMapper.toDomain)
     }
 
-    public func clearCache() async throws {
+    func clearCache() async throws {
         let context = ModelContext(modelContainer)
         let descriptor = FetchDescriptor<CachedMovieEntity>()
         let entities = try context.fetch(descriptor)

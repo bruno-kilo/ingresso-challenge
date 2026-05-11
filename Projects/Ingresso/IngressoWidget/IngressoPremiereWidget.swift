@@ -26,6 +26,9 @@ struct PremiereEntry: TimelineEntry {
 }
 
 struct PremiereTimelineProvider: TimelineProvider {
+    private let infraFactory = IngressoInfrastructureFactory()
+    private let dataFactory = IngressoDataFactory()
+
     func placeholder(in context: Context) -> PremiereEntry {
         .placeholder
     }
@@ -50,14 +53,18 @@ struct PremiereTimelineProvider: TimelineProvider {
     }
 
     private static func fetchEntry() async -> PremiereEntry {
+        let infraFactory = IngressoInfrastructureFactory()
+        let dataFactory = IngressoDataFactory()
+
         do {
-            let client = IngressoHTTPClient(
-                baseURL: URL(string: "https://api-content.ingresso.com")!,
+            let client = infraFactory.makeClient(
+                baseURL: URL(string: "https://api-content.ingresso.com"),
                 maxRetries: 1
             )
-            let repo = RemoteMovieRepository(client: client)
+            let repo = dataFactory.makeRemoteMovieRepository(client: client)
+            let sortStrategy = dataFactory.makePremiereDateSortStrategy()
             let movies = try await repo.fetchComingSoonMovies()
-            let sorted = PremiereDateSortStrategy().sort(movies)
+            let sorted = sortStrategy.sort(movies)
             let top = Array(sorted.prefix(6))
 
             let widgetMovies = await withTaskGroup(of: WidgetMovie.self) { group in

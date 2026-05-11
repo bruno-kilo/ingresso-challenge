@@ -2,8 +2,8 @@ import Foundation
 import IngressoDomain
 import IngressoInfrastructure
 
-public enum FavoriteMovieMapper {
-    public static func toEntity(_ movie: IngressoMovie) -> FavoriteMovieEntity {
+enum FavoriteMovieMapper {
+    static func toEntity(_ movie: IngressoMovie) -> FavoriteMovieEntity {
         FavoriteMovieEntity(
             movieId: movie.id,
             title: movie.title,
@@ -35,7 +35,7 @@ public enum FavoriteMovieMapper {
         )
     }
 
-    public static func toDomain(_ entity: FavoriteMovieEntity) -> IngressoMovie {
+    static func toDomain(_ entity: FavoriteMovieEntity) -> IngressoMovie {
         MovieEntityMapper.toDomain(entity)
     }
 }

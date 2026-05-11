@@ -1,4 +1,4 @@
-public struct ImageDTO: Decodable, Sendable {
-    public let url: String
-    public let type: String
+struct ImageDTO: Decodable, Sendable {
+    let url: String
+    let type: String
 }

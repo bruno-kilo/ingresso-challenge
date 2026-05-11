@@ -32,7 +32,7 @@ public final class MovieListViewModel {
     private var allMovies: [IngressoMovie] = []
     private var hasFetched = false
 
-    public init(
+    init(
         fetchMoviesUseCase: FetchMoviesUseCaseProtocol,
         searchMoviesUseCase: SearchMoviesUseCaseProtocol
     ) {

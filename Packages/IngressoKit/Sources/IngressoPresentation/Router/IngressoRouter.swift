@@ -9,7 +9,7 @@ public final class IngressoRouter {
     public var sheet: IngressoRoute?
     public var fullScreenCover: IngressoRoute?
 
-    public init() {}
+    init() {}
 
     public var currentPath: [IngressoRoute] {
         get { paths[selectedTab, default: []] }

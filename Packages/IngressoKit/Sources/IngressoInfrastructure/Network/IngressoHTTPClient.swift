@@ -1,15 +1,15 @@
 import Foundation
 import OSLog
 
-public actor IngressoHTTPClient: HTTPClientProtocol {
-    private let baseURL: URL
+actor IngressoHTTPClient: HTTPClientProtocol {
+    private let baseURL: URL?
     private let session: URLSession
     private let decoder: JSONDecoder
     private let logger = Logger(subsystem: "com.brunosantos.Ingresso", category: "HTTP")
     private let maxRetries: Int
 
-    public init(
-        baseURL: URL,
+    init(
+        baseURL: URL?,
         configuration: URLSessionConfiguration = .default,
         maxRetries: Int = 2
     ) {
@@ -19,7 +19,7 @@ public actor IngressoHTTPClient: HTTPClientProtocol {
         self.maxRetries = maxRetries
     }
 
-    public func request<T: Decodable & Sendable>(
+    func request<T: Decodable & Sendable>(
         _ endpoint: IngressoEndpoint,
         as type: T.Type
     ) async throws -> T {
@@ -84,6 +84,7 @@ public actor IngressoHTTPClient: HTTPClientProtocol {
     }
 
     func buildRequest(for endpoint: IngressoEndpoint) throws -> URLRequest {
+        guard let baseURL else { throw IngressoNetworkError.badURL }
         var components = URLComponents(
             url: baseURL.appendingPathComponent(endpoint.path),
             resolvingAgainstBaseURL: true

@@ -9,7 +9,7 @@ public final class FavoritesViewModel {
 
     private let repository: FavoritesRepositoryProtocol
 
-    public init(repository: FavoritesRepositoryProtocol) {
+    init(repository: FavoritesRepositoryProtocol) {
         self.repository = repository
     }
 

@@ -1,3 +1,3 @@
-public struct MovieResponseDTO: Decodable, Sendable {
-    public let items: [MovieDTO]
+struct MovieResponseDTO: Decodable, Sendable {
+    let items: [MovieDTO]
 }

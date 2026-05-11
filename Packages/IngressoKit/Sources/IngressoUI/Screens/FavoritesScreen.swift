@@ -5,7 +5,7 @@ import IngressoPresentation
 public struct FavoritesScreen: View {
     @Bindable var viewModel: FavoritesViewModel
 
-    public init(viewModel: FavoritesViewModel) {
+    init(viewModel: FavoritesViewModel) {
         self.viewModel = viewModel
     }
 

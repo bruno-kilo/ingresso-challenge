@@ -10,7 +10,7 @@ public final class SettingsViewModel {
 
     private let cacheRepository: MovieCacheRepositoryProtocol
 
-    public init(cacheRepository: MovieCacheRepositoryProtocol) {
+    init(cacheRepository: MovieCacheRepositoryProtocol) {
         self.cacheRepository = cacheRepository
     }
 

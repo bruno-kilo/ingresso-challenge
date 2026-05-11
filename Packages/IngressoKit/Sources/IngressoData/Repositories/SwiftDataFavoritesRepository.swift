@@ -4,15 +4,15 @@ import SwiftData
 import IngressoDomain
 import IngressoInfrastructure
 
-public final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @unchecked Sendable {
+final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @unchecked Sendable {
     private let modelContainer: ModelContainer
     private let logger = Logger(subsystem: "com.brunosantos.Ingresso", category: "Favorites")
 
-    public init(modelContainer: ModelContainer) {
+    init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
     }
 
-    public func fetchAll() async throws -> [IngressoMovie] {
+    func fetchAll() async throws -> [IngressoMovie] {
         let context = ModelContext(modelContainer)
         let descriptor = FetchDescriptor<FavoriteMovieEntity>(
             sortBy: [SortDescriptor(\.addedAt)]
@@ -22,7 +22,7 @@ public final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @u
         return entities.map(FavoriteMovieMapper.toDomain)
     }
 
-    public func add(_ movie: IngressoMovie) async throws {
+    func add(_ movie: IngressoMovie) async throws {
         let context = ModelContext(modelContainer)
         let entity = FavoriteMovieMapper.toEntity(movie)
         context.insert(entity)
@@ -30,7 +30,7 @@ public final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @u
         logger.info("★ Favoritado: \(movie.title)")
     }
 
-    public func remove(byId id: String) async throws {
+    func remove(byId id: String) async throws {
         let context = ModelContext(modelContainer)
         let descriptor = FetchDescriptor<FavoriteMovieEntity>(
             predicate: #Predicate { $0.movieId == id }
@@ -42,7 +42,7 @@ public final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @u
         }
     }
 
-    public func contains(id: String) async throws -> Bool {
+    func contains(id: String) async throws -> Bool {
         let context = ModelContext(modelContainer)
         let descriptor = FetchDescriptor<FavoriteMovieEntity>(
             predicate: #Predicate { $0.movieId == id }

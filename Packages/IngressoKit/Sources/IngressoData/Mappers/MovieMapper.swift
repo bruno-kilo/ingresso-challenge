@@ -1,8 +1,8 @@
 import Foundation
 import IngressoDomain
 
-public enum MovieMapper {
-    public static func toDomain(_ dto: MovieDTO) -> IngressoMovie {
+enum MovieMapper {
+    static func toDomain(_ dto: MovieDTO) -> IngressoMovie {
         let posterURL = findImageURL(in: dto.images, type: "PosterPortrait")
             ?? dto.imageFeatured.flatMap(URL.init(string:))
 
@@ -33,7 +33,7 @@ public enum MovieMapper {
         )
     }
 
-    public static func toDomain(_ dtos: [MovieDTO]) -> [IngressoMovie] {
+    static func toDomain(_ dtos: [MovieDTO]) -> [IngressoMovie] {
         dtos.map(toDomain)
     }
 

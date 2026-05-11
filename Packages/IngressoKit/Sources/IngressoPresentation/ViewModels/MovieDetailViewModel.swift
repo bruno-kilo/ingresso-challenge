@@ -6,7 +6,7 @@ import IngressoDomain
 public final class MovieDetailViewModel {
     public let movie: IngressoMovie
 
-    public init(movie: IngressoMovie) {
+    init(movie: IngressoMovie) {
         self.movie = movie
     }
 }

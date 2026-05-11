@@ -1,24 +1,24 @@
-public struct MovieDTO: Decodable, Sendable {
-    public let id: String
-    public let title: String
-    public let originalTitle: String
-    public let type: String
-    public let synopsis: String
-    public let cast: String
-    public let director: String
-    public let genres: [String]
-    public let imageFeatured: String?
-    public let images: [ImageDTO]
-    public let premiereDate: PremiereDateDTO?
-    public let contentRating: String
-    public let ratingDetails: RatingDetailsDTO?
-    public let duration: String
-    public let inPreSale: Bool
-    public let isPlaying: Bool
-    public let isComingSoon: Bool
-    public let trailers: [TrailerDTO]
-    public let siteURL: String
-    public let distributor: String
-    public let countryOrigin: String
-    public let ratingDescriptors: [String]
+struct MovieDTO: Decodable, Sendable {
+    let id: String
+    let title: String
+    let originalTitle: String
+    let type: String
+    let synopsis: String
+    let cast: String
+    let director: String
+    let genres: [String]
+    let imageFeatured: String?
+    let images: [ImageDTO]
+    let premiereDate: PremiereDateDTO?
+    let contentRating: String
+    let ratingDetails: RatingDetailsDTO?
+    let duration: String
+    let inPreSale: Bool
+    let isPlaying: Bool
+    let isComingSoon: Bool
+    let trailers: [TrailerDTO]
+    let siteURL: String
+    let distributor: String
+    let countryOrigin: String
+    let ratingDescriptors: [String]
 }

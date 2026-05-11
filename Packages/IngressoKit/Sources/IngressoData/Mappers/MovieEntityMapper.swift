@@ -2,8 +2,8 @@ import Foundation
 import IngressoDomain
 import IngressoInfrastructure
 
-public enum MovieEntityMapper {
-    public static func toDomain(_ entity: some MovieEntityProtocol) -> IngressoMovie {
+enum MovieEntityMapper {
+    static func toDomain(_ entity: some MovieEntityProtocol) -> IngressoMovie {
         let premiereDate: IngressoPremiereDate? = if let day = entity.premiereDayAndMonth,
             let week = entity.premiereDayOfWeek,
             let year = entity.premiereYear {
@@ -59,7 +59,7 @@ public enum MovieEntityMapper {
         )
     }
 
-    public static func updateEntity(_ entity: some MovieEntityProtocol, from movie: IngressoMovie) {
+    static func updateEntity(_ entity: some MovieEntityProtocol, from movie: IngressoMovie) {
         entity.movieId = movie.id
         entity.title = movie.title
         entity.originalTitle = movie.originalTitle

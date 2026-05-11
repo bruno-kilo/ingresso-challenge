@@ -4,7 +4,7 @@ import IngressoPresentation
 public struct SettingsScreen: View {
     let viewModel: SettingsViewModel
 
-    public init(viewModel: SettingsViewModel) {
+    init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
     }
 
