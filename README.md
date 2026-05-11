@@ -1,125 +1,187 @@
-# Desafio Mobile
+# Ingresso Challenge
 
-O desafio consiste em criar um aplicativo que consuma uma API da Ingresso.com e apresente o resultado na tela.
-A tela deve conter uma lista com os filmes que deverão entrar em cartaz em breve.
+App iOS que consome a API pública da Ingresso.com para exibir os próximos filmes em cartaz nos cinemas brasileiros.
 
+---
 
+## Como rodar o projeto
 
-## Requisitos Técnicos
+1. **Xcode 26** (beta ou superior)
+2. Abra `Ingresso.xcworkspace` na raiz do projeto
+3. Selecione o scheme `Ingresso` e o simulador desejado (iOS 26+)
+4. `Cmd + R` para buildar e rodar
+5. Para rodar os testes: `Cmd + U`
 
-1. Linguagens: Swift ou Kotlin;
-2. Utilizar uma IDE atualizada (latest stable version), XCode ou Android Studio;
-3. Utilize uma ou mais bibliotecas de terceiro;
-4. Faça pelo menos um teste unitário e/ou de interface;
-5. Log é bom! Nós gostamos, eles precisam ser úteis;
-6. Crie um Readme.md, organizado em tópicos, na raiz do projeto com instruções/comentários/explicações.
+> Não há dependências externas. Tudo é resolvido via SPM local.
 
-**No iOS utilize**
-- Swift UI.
+---
 
-**No Android utilize**
-- Jetpack Compose.
+## Arquitetura
 
+O projeto segue **Clean Architecture** com separação em módulos SPM multi-target dentro de `Packages/IngressoKit`:
 
+```
+IngressoApp (Composition Root)
+│
+├── IngressoUI          → Screens, Components, Design Tokens
+├── IngressoPresentation → ViewModels, Router, States
+├── IngressoData         → DTOs, Mappers, Repositories concretos
+├── IngressoDomain       → Entidades, Use Cases, Protocols
+├── IngressoInfrastructure → HTTP Client, Persistence, Network
+└── IngressoMock         → Mocks e Fixtures para testes/previews
+```
 
-## Requisitos do Produto
+**Regra de dependência:** camadas externas dependem das internas. Domain e Infrastructure não possuem dependências internas.
 
-Como foi dito anteriormente, deve-se criar uma tela de filmes que ainda vão entrar em cartaz.
-Alguns elementos precisam estar nessa interface como:
+---
 
-1. Tela de loading;
-2. Poster (podem existir filmes ainda sem poster);
-3. Nome do filme;
-4. Data de estreia (se existir);
-5. Ordene os filmes pelos quais estejam próximos de entrarem em cartaz (campo `premiereDate`);
-6. Organize o projeto, preferêncialmente utilizando alguma arquitetura.
+## Decisões técnicas
 
-Você determina a interface, use a criatividade.
-Nós fizemos essa tela assim.
+### Por que Clean Architecture em módulos SPM?
 
-<p align="center">
-  <img src="filmes-em-breve-1.png" width="350" title="Tela de Filmes em breve, topo">
-  <img src="filmes-em-breve-2.png" width="350" title="Tela de Filmes em breve, com data de estreia">
-</p>
+- **Isolamento de responsabilidades** — cada módulo compila independentemente, forçando limites claros
+- **Tempo de build** — alterações em UI não recompilam Domain/Infra
+- **Testabilidade** — Domain define protocolos, Data/Infra implementam, testes usam mocks
 
-Observações:
+### Por que zero dependências externas?
 
-1. Não é necessário colocar o elemento de publicidade;
-2. A NavBar/Navigation Bar pode ser simples;
-3. Você pode mudar totalmente essa tela;
-4. Você pode implementar funcionalidades novas se desejar, abaixo existe uma lista com sugestões;
-5. Animações são bem-vindas mas não obrigatórias.
+- O projeto usa apenas frameworks nativos da Apple (SwiftUI, SwiftData, WidgetKit, Network)
+- Reduz superfície de ataque, simplifica manutenção e demonstra domínio dos frameworks
 
+### Por que SwiftData ao invés de CoreData?
 
+- API declarativa que combina com SwiftUI
+- Menos boilerplate, integração nativa com `@Model`
+- Usado para persistência de favoritos e cache offline
 
-## Sugestões para o Produto
+### Por que actor no HTTPClient?
 
-Gostou do desafio? Gostaria de avançar mais?
-As sugestões são:
+- `IngressoHTTPClient` é um `actor` para garantir thread-safety sem locks manuais
+- Retry com backoff exponencial configurável
+- Erros tipados (`IngressoNetworkError`) com `isRetryable` para decisão automática de retry
 
-1. Busca;
-2. Pull to refresh;
-3. Tela de detalhes de um filme;
-4. Favoritar filme;
-5. Compartilhar;
-6. Filtrar por estreias do mês;
-7. Alguns filmes podem estar em pré-venda (campo `isPreSale`), pode incluir um elemento diferenciado;
-8. Animações são bem-vindas.
+---
 
+## Design Patterns utilizados
 
+| Pattern | Onde | Por quê |
+|---------|------|---------|
+| Repository | Domain → Data | Protocol no Domain, implementação concreta no Data |
+| Use Case | Domain | Orquestra repositórios, cache e sorting |
+| Strategy | Domain | `PremiereDateSortStrategy` para ordenação extensível |
+| MVVM | Presentation | `@Observable` ViewModels com states tipados |
+| Router | Presentation | Per-tab NavigationPath, sheet, fullScreenCover |
+| Mapper/Adapter | Data | DTO → Domain, Entity ↔ Domain bidirecional |
+| Factory | Presentation → App | `ViewModelFactoryProtocol` → `IngressoDependencyContainer` |
+| Composition Root | App | `IngressoDependencyContainer` injeta todas dependências |
+
+---
+
+## Funcionalidades implementadas
+
+### Requisitos do desafio
+- [x] Tela de loading (shimmer skeleton)
+- [x] Poster do filme (com fallback para filmes sem poster)
+- [x] Nome do filme
+- [x] Data de estreia
+- [x] Ordenação por `premiereDate` (Strategy pattern)
+- [x] Arquitetura organizada (Clean Architecture, SPM multi-target)
+
+### Funcionalidades extras
+- [x] **Busca** — filtro por título, diretor e gênero com cards de categorias
+- [x] **Pull to refresh** — atualiza lista de filmes
+- [x] **Tela de detalhes** — banner, classificação indicativa, gêneros (FlowLayout), trailers
+- [x] **Favoritar filme** — persistência com SwiftData, toggle instantâneo
+- [x] **Pré-venda** — tela dedicada com cards destacados e badge
+- [x] **Widget** — WidgetKit com 3 tamanhos (small, medium, large)
+- [x] **Cache offline** — SwiftData com fallback automático quando sem internet
+- [x] **Error handling** — StatusBanner de conectividade, retry com backoff exponencial
+- [x] **Tela Sobre** — roteiro técnico do desenvolvimento e gerenciamento de cache
+
+---
+
+## Testes
+
+Framework: **Swift Testing**
+
+| Suite | Testes | Cobertura |
+|-------|--------|-----------|
+| IngressoDataTests | 5 | MovieMapper, RemoteMovieRepository |
+| IngressoInfrastructureTests | 5 | NetworkError, Endpoint, HTTPClient |
+| IngressoPresentationTests | 5 | MovieListViewModel, FavoritesViewModel |
+
+Rode com `Cmd + U` no scheme principal.
+
+---
+
+## Estrutura de pastas
+
+```
+ingresso-challenge/
+├── Ingresso.xcworkspace
+├── .swiftlint.yml
+├── Projects/
+│   └── Ingresso/
+│       ├── Ingresso/          → App target (ContentView, DI Container)
+│       └── IngressoWidget/    → Widget Extension
+└── Packages/
+    └── IngressoKit/
+        ├── Package.swift
+        ├── Sources/
+        │   ├── IngressoDomain/
+        │   ├── IngressoInfrastructure/
+        │   ├── IngressoData/
+        │   ├── IngressoPresentation/
+        │   ├── IngressoUI/
+        │   └── IngressoMock/
+        └── Tests/
+            ├── IngressoDataTests/
+            ├── IngressoInfrastructureTests/
+            └── IngressoPresentationTests/
+```
+
+---
+
+## Stack
+
+| Item | Tecnologia |
+|------|-----------|
+| Linguagem | Swift 6.3 |
+| IDE | Xcode 26 |
+| Plataforma | iOS 26+ |
+| UI | SwiftUI |
+| Persistência | SwiftData |
+| Testes | Swift Testing |
+| Pacotes | SPM multi-target |
+| Widget | WidgetKit |
+| Lint | SwiftLint |
+| Concurrency | Swift 6 strict concurrency |
+
+---
+
+## Segurança
+
+- Nenhuma credencial ou token armazenado no código — a API é pública
+- Todas as URLs são construídas via `URLComponents` (prevenção de injection)
+- `HTTPClient` é `actor` — sem race conditions
+- Cache e favoritos são dados locais via SwiftData, sem exposição externa
+
+---
+
+## Git Flow
+
+O desenvolvimento seguiu feature branches com merge para `develop`:
+
+1. `feature/estrutura-projeto` — Workspace, SPM multi-target
+2. `feature/infraestrutura` — HTTPClient (actor), Endpoint, Persistence
+3. `feature/dominio` — Entidades, protocolos, use cases
+4. `feature/camada-dados` — DTOs, Mappers, Repositories
+5. `feature/apresentacao` — ViewModels, Router, States
+6. `feature/ui` — Screens, components, mocks
+7. `feature/widget` — WidgetKit extension
+
+---
 
 ## API
 
-Utilize a URL da nossa API que retorna um JSON com os filmes que irão entrar em cartaz.
-
 **GET** [https://api-content.ingresso.com/v0/events/coming-soon/partnership/desafio](https://api-content.ingresso.com/v0/events/coming-soon/partnership/desafio)
-
-
-
-## Como vamos receber o desafio?
-
-**Opção 1 - Fork (preferêncial)**
-- Faça um fork do desafio e desenvolva o seu projeto;
-- Acabou de desenvolver? Submeta um pull request.
- 
-**Opção 2 - Repositório Privado**
-- Faça o seu projeto em um repositório privado seu;
-- Quando terminar vamos pedir para adicionar um avaliador como membro.
-
-**Opção 3 - Plano C**
-- Teve problema com as opções anteriores? Então compacte o seu projeto e envie para nós.
-
-
-
-## Avaliação
-
-**Código** 
-- Legível e clean. 
-- Pode usar comentários se achar necessário.
-
-**Organização** 
-- Separando em módulos/frameworks se possível;
-- Está utilizando alguma arquitetura.
-
-**Segurança** 
-- Encontrou alguma vulnerabilidade? Viu algo que ficou desconfortável durante o desenvolvimento? Coloque no README. 
-- Se for alguma falha grave, por favor nos acione por email.
-
-**Documentação Básica**
-- O README explica como rodar o projeto? 
-- Explique a tomada de decisão. Escreva de forma organizada, em tópicos. 
-- Imagine que você esteja escrevendo para você mesmo do futuro e não lembra de nada do projeto.
-
-**Objetivo**
-- O desafio está sendo feito o mínimo exigido.
-
-**Commits** 
-- Qualidade e padrão;
-- Pode ser em inglês ou português.
-
-**UX/UI**
-- Interface amigável;
-- Fácil de usar.
-
-**One more thing**
-- Tem mais alguma coisa que você queira nos contar?

@@ -1,10 +1,12 @@
 import Foundation
+import OSLog
 import SwiftData
 import IngressoDomain
 import IngressoInfrastructure
 
 public final class SwiftDataMovieCacheRepository: MovieCacheRepositoryProtocol, @unchecked Sendable {
     private let modelContainer: ModelContainer
+    private let logger = Logger(subsystem: "com.brunosantos.Ingresso", category: "Cache")
 
     public init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
@@ -34,6 +36,7 @@ public final class SwiftDataMovieCacheRepository: MovieCacheRepositoryProtocol, 
         }
 
         try context.save()
+        logger.info("Cache atualizado: \(movies.count) filmes")
     }
 
     public func loadCachedMovies() async throws -> [IngressoMovie] {
@@ -53,5 +56,6 @@ public final class SwiftDataMovieCacheRepository: MovieCacheRepositoryProtocol, 
             context.delete(entity)
         }
         try context.save()
+        logger.info("Cache limpo: \(entities.count) filmes removidos")
     }
 }

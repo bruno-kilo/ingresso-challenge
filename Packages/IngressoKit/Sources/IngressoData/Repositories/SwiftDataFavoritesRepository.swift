@@ -1,10 +1,12 @@
 import Foundation
+import OSLog
 import SwiftData
 import IngressoDomain
 import IngressoInfrastructure
 
 public final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @unchecked Sendable {
     private let modelContainer: ModelContainer
+    private let logger = Logger(subsystem: "com.brunosantos.Ingresso", category: "Favorites")
 
     public init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
@@ -16,6 +18,7 @@ public final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @u
             sortBy: [SortDescriptor(\.addedAt)]
         )
         let entities = try context.fetch(descriptor)
+        logger.debug("Favoritos carregados: \(entities.count)")
         return entities.map(FavoriteMovieMapper.toDomain)
     }
 
@@ -24,6 +27,7 @@ public final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @u
         let entity = FavoriteMovieMapper.toEntity(movie)
         context.insert(entity)
         try context.save()
+        logger.info("★ Favoritado: \(movie.title)")
     }
 
     public func remove(byId id: String) async throws {
@@ -34,6 +38,7 @@ public final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @u
         if let entity = try context.fetch(descriptor).first {
             context.delete(entity)
             try context.save()
+            logger.info("☆ Desfavoritado: \(id)")
         }
     }
 
