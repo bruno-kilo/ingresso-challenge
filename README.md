@@ -2,6 +2,18 @@
 
 App iOS que consome a API pública da Ingresso.com para exibir os próximos filmes em cartaz nos cinemas brasileiros.
 
+<p align="center">
+  <img src="Assets/screenshot-6.png" width="200">
+  <img src="Assets/screenshot-5.png" width="200">
+  <img src="Assets/screenshot-4.png" width="200">
+</p>
+
+<p align="center">
+  <img src="Assets/screenshot-2.png" width="200">
+  <img src="Assets/screenshot-3.png" width="200">
+  <img src="Assets/screenshot-1.png" width="200">
+</p>
+
 ---
 
 ## Como rodar o projeto
