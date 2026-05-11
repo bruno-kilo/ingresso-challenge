@@ -7,6 +7,6 @@ public struct GenreSection: Sendable {
         GenreSection(title: "Animação", genres: ["Animação"]),
         GenreSection(title: "Drama", genres: ["Drama"]),
         GenreSection(title: "Comédia", genres: ["Comédia"]),
-        GenreSection(title: "Terror & Suspense", genres: ["Terror", "Suspense"]),
+        GenreSection(title: "Terror & Suspense", genres: ["Terror", "Suspense"])
     ]
 }

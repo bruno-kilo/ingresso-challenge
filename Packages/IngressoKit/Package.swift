@@ -7,7 +7,7 @@ let package = Package(
     defaultLocalization: "pt-BR",
     platforms: [
         .iOS(.v26),
-        .macOS(.v26),
+        .macOS(.v26)
     ],
     products: [
         .library(name: "IngressoDomain", targets: ["IngressoDomain"]),
@@ -15,7 +15,7 @@ let package = Package(
         .library(name: "IngressoInfrastructure", targets: ["IngressoInfrastructure"]),
         .library(name: "IngressoPresentation", targets: ["IngressoPresentation"]),
         .library(name: "IngressoUI", targets: ["IngressoUI"]),
-        .library(name: "IngressoMock", targets: ["IngressoMock"]),
+        .library(name: "IngressoMock", targets: ["IngressoMock"])
     ],
     targets: [
         // MARK: - Domain (ZERO deps)
@@ -49,7 +49,7 @@ let package = Package(
                 "IngressoDomain",
                 "IngressoData",
                 "IngressoInfrastructure",
-                "IngressoPresentation",
+                "IngressoPresentation"
             ]
         ),
 
@@ -65,6 +65,6 @@ let package = Package(
         .testTarget(
             name: "IngressoPresentationTests",
             dependencies: ["IngressoPresentation", "IngressoDomain", "IngressoInfrastructure", "IngressoMock"]
-        ),
+        )
     ]
 )

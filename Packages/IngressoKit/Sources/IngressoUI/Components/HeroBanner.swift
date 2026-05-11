@@ -45,6 +45,12 @@ struct HeroBanner: View {
 }
 
 #Preview {
-    HeroBanner(movie: IngressoFixtures.makeMovie(title: "Mortal Kombat 2", genres: ["Ação", "Fantasia"], inPreSale: true))
+    HeroBanner(
+        movie: IngressoFixtures.makeMovie(
+            title: "Mortal Kombat 2",
+            genres: ["Ação", "Fantasia"],
+            inPreSale: true
+        )
+    )
         .padding()
 }

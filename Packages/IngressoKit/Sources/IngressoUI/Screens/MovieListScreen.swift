@@ -138,7 +138,9 @@ public struct MovieListScreen: View {
 
     private var fullBrowseContent: some View {
         Group {
-            if let featured = viewModel.filteredMovies.first(where: { $0.inPreSale }) ?? viewModel.filteredMovies.first {
+            if let featured = viewModel.filteredMovies
+                .first(where: { $0.inPreSale })
+                ?? viewModel.filteredMovies.first {
                 Button {
                     router.navigate(to: .movieDetail(featured))
                 } label: {
@@ -187,7 +189,10 @@ public struct MovieListScreen: View {
             }
             .padding(.horizontal)
 
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: IngressoSpacing.md)], spacing: IngressoSpacing.lg) {
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 140), spacing: IngressoSpacing.md)],
+                spacing: IngressoSpacing.lg
+            ) {
                 ForEach(displayedMovies) { movie in
                     Button {
                         router.navigate(to: .movieDetail(movie))
@@ -207,7 +212,10 @@ public struct MovieListScreen: View {
                 .font(.title3.bold())
                 .padding(.horizontal)
 
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: IngressoSpacing.md)], spacing: IngressoSpacing.lg) {
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 140), spacing: IngressoSpacing.md)],
+                spacing: IngressoSpacing.lg
+            ) {
                 ForEach(viewModel.filteredMovies) { movie in
                     Button {
                         router.navigate(to: .movieDetail(movie))
@@ -223,7 +231,7 @@ public struct MovieListScreen: View {
 }
 
 #Preview {
-    @Previewable @State var vm: MovieListViewModel = {
+    @Previewable @State var viewModel: MovieListViewModel = {
         let fetchUseCase = MockFetchMoviesUseCase()
         fetchUseCase.result = .success(IngressoFixtures.sampleMovies)
         return IngressoPresentationFactory().makeMovieListViewModel(
@@ -233,7 +241,7 @@ public struct MovieListScreen: View {
     }()
 
     NavigationStack {
-        MovieListScreen(viewModel: vm)
+        MovieListScreen(viewModel: viewModel)
     }
     .environment(IngressoPresentationFactory().makeRouter())
     .environment(IngressoInfrastructureFactory().makeNetworkMonitor())

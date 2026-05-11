@@ -68,6 +68,6 @@ public enum IngressoFixtures {
             dayAndMonth: "15/05",
             dayOfWeek: "segunda-feira",
             year: "2026"
-        )),
+        ))
     ]
 }

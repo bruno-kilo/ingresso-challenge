@@ -54,7 +54,7 @@ public struct MovieDetailScreen: View {
             ZStack(alignment: .bottomLeading) {
                 IngressoBannerImage(movie: movie, height: 200)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
-                
+
                 HStack(spacing: IngressoSpacing.sm) {
                     if movie.inPreSale {
                         IngressoPreSaleBadge()
@@ -263,7 +263,13 @@ public struct MovieDetailScreen: View {
                     director: "Simon McQuoid",
                     genres: ["Ação", "Fantasia", "Aventura"],
                     inPreSale: true,
-                    trailers: [IngressoTrailer(type: "Trailer Oficial", url: URL(string: "https://youtube.com/watch?v=test")!, embeddedURL: nil)],
+                    trailers: [
+                        IngressoTrailer(
+                            type: "Trailer Oficial",
+                            url: URL(string: "https://youtube.com/watch?v=test")!,
+                            embeddedURL: nil
+                        )
+                    ],
                     ratingDescriptors: ["Violência", "Linguagem imprópria"]
                 )
             )

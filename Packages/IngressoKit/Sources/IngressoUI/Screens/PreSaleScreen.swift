@@ -88,11 +88,11 @@ public struct PreSaleScreen: View {
 }
 
 #Preview {
-    @Previewable @State var vm: MovieListViewModel = {
+    @Previewable @State var viewModel: MovieListViewModel = {
         let fetchUseCase = MockFetchMoviesUseCase()
         fetchUseCase.result = .success([
             IngressoFixtures.makeMovie(id: "1", title: "Mortal Kombat 2", inPreSale: true),
-            IngressoFixtures.makeMovie(id: "2", title: "Thunderbolts", inPreSale: true),
+            IngressoFixtures.makeMovie(id: "2", title: "Thunderbolts", inPreSale: true)
         ])
         return IngressoPresentationFactory().makeMovieListViewModel(
             fetchMoviesUseCase: fetchUseCase,
@@ -101,7 +101,7 @@ public struct PreSaleScreen: View {
     }()
 
     NavigationStack {
-        PreSaleScreen(viewModel: vm)
+        PreSaleScreen(viewModel: viewModel)
     }
     .environment(IngressoPresentationFactory().makeRouter())
     .environment(IngressoInfrastructureFactory().makeNetworkMonitor())

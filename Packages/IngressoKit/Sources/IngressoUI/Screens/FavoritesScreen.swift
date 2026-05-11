@@ -22,7 +22,10 @@ public struct FavoritesScreen: View {
                 )
             } else {
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: IngressoSpacing.md)], spacing: IngressoSpacing.lg) {
+                    LazyVGrid(
+                        columns: [GridItem(.adaptive(minimum: 150), spacing: IngressoSpacing.md)],
+                        spacing: IngressoSpacing.lg
+                    ) {
                         ForEach(viewModel.favorites) { movie in
                             Button {
                                 router.navigate(to: .movieDetail(movie))
@@ -46,16 +49,16 @@ public struct FavoritesScreen: View {
 }
 
 #Preview {
-    @Previewable @State var vm: FavoritesViewModel = {
+    @Previewable @State var viewModel: FavoritesViewModel = {
         let repo = MockFavoritesRepository()
         repo.movies = IngressoFixtures.sampleMovies
         return IngressoPresentationFactory().makeFavoritesViewModel(repository: repo)
     }()
 
     NavigationStack {
-        FavoritesScreen(viewModel: vm)
+        FavoritesScreen(viewModel: viewModel)
     }
     .environment(IngressoPresentationFactory().makeRouter())
     .environment(IngressoInfrastructureFactory().makeNetworkMonitor())
-    .environment(vm)
+    .environment(viewModel)
 }

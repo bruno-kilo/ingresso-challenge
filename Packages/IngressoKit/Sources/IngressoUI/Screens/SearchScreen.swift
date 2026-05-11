@@ -36,7 +36,13 @@ public struct SearchScreen: View {
 
     private var browseCategories: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: IngressoSpacing.md), GridItem(.flexible(), spacing: IngressoSpacing.md)], spacing: IngressoSpacing.md) {
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: IngressoSpacing.md),
+                    GridItem(.flexible(), spacing: IngressoSpacing.md)
+                ],
+                spacing: IngressoSpacing.md
+            ) {
                 ForEach(SearchCategory.allCases) { category in
                     Button {
                         viewModel.searchQuery = category.query
@@ -52,7 +58,10 @@ public struct SearchScreen: View {
 
     private var searchResults: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: IngressoSpacing.md)], spacing: IngressoSpacing.lg) {
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 140), spacing: IngressoSpacing.md)],
+                spacing: IngressoSpacing.lg
+            ) {
                 ForEach(viewModel.filteredMovies) { movie in
                     Button {
                         router.navigate(to: .movieDetail(movie))
@@ -69,7 +78,7 @@ public struct SearchScreen: View {
 }
 
 #Preview {
-    @Previewable @State var vm: MovieListViewModel = {
+    @Previewable @State var viewModel: MovieListViewModel = {
         let fetchUseCase = MockFetchMoviesUseCase()
         fetchUseCase.result = .success(IngressoFixtures.sampleMovies)
         return IngressoPresentationFactory().makeMovieListViewModel(
@@ -79,7 +88,7 @@ public struct SearchScreen: View {
     }()
 
     NavigationStack {
-        SearchScreen(viewModel: vm)
+        SearchScreen(viewModel: viewModel)
     }
     .environment(IngressoPresentationFactory().makeRouter())
     .environment(IngressoInfrastructureFactory().makeNetworkMonitor())

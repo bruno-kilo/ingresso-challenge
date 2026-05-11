@@ -4,37 +4,6 @@ import IngressoInfrastructure
 
 enum MovieEntityMapper {
     static func toDomain(_ entity: some MovieEntityProtocol) -> IngressoMovie {
-        let premiereDate: IngressoPremiereDate? = if let day = entity.premiereDayAndMonth,
-            let week = entity.premiereDayOfWeek,
-            let year = entity.premiereYear {
-            IngressoPremiereDate(
-                localDate: entity.premiereDateLocal,
-                dayAndMonth: day,
-                dayOfWeek: week,
-                year: year
-            )
-        } else {
-            nil
-        }
-
-        let contentRating: IngressoContentRating? = if let id = entity.contentRatingId,
-            let name = entity.contentRatingName,
-            let label = entity.contentRatingLabel,
-            let displayName = entity.contentRatingDisplayName,
-            let description = entity.contentRatingDescription,
-            let color = entity.contentRatingColor {
-            IngressoContentRating(
-                id: id,
-                name: name,
-                label: label,
-                displayName: displayName,
-                description: description,
-                color: color
-            )
-        } else {
-            nil
-        }
-
         return IngressoMovie(
             id: entity.movieId,
             title: entity.title,
@@ -45,8 +14,8 @@ enum MovieEntityMapper {
             genres: entity.genres,
             posterURL: entity.posterURLString.flatMap(URL.init(string:)),
             horizontalPosterURL: entity.horizontalPosterURLString.flatMap(URL.init(string:)),
-            premiereDate: premiereDate,
-            contentRating: contentRating,
+            premiereDate: makePremiereDate(from: entity),
+            contentRating: makeContentRating(from: entity),
             duration: entity.duration,
             inPreSale: entity.inPreSale,
             isPlaying: entity.isPlaying,
@@ -56,6 +25,43 @@ enum MovieEntityMapper {
             distributor: entity.distributor,
             countryOrigin: entity.countryOrigin,
             ratingDescriptors: entity.ratingDescriptors
+        )
+    }
+
+    private static func makePremiereDate(
+        from entity: some MovieEntityProtocol
+    ) -> IngressoPremiereDate? {
+        guard let day = entity.premiereDayAndMonth,
+              let week = entity.premiereDayOfWeek,
+              let year = entity.premiereYear else {
+            return nil
+        }
+        return IngressoPremiereDate(
+            localDate: entity.premiereDateLocal,
+            dayAndMonth: day,
+            dayOfWeek: week,
+            year: year
+        )
+    }
+
+    private static func makeContentRating(
+        from entity: some MovieEntityProtocol
+    ) -> IngressoContentRating? {
+        guard let id = entity.contentRatingId,
+              let name = entity.contentRatingName,
+              let label = entity.contentRatingLabel,
+              let displayName = entity.contentRatingDisplayName,
+              let description = entity.contentRatingDescription,
+              let color = entity.contentRatingColor else {
+            return nil
+        }
+        return IngressoContentRating(
+            id: id,
+            name: name,
+            label: label,
+            displayName: displayName,
+            description: description,
+            color: color
         )
     }
 

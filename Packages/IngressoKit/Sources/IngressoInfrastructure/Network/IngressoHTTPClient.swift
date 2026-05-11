@@ -66,8 +66,15 @@ actor IngressoHTTPClient: HTTPClientProtocol {
         do {
             (data, response) = try await session.data(for: urlRequest)
         } catch let error as URLError {
-            let elapsed = String(format: "%.0f", (CFAbsoluteTimeGetCurrent() - start) * 1000)
-            logger.error("❌ request \(endpoint.method.rawValue) \(endpoint.path) falhou em \(elapsed)ms: \(error.localizedDescription)")
+            let elapsed = String(
+                format: "%.0f",
+                (CFAbsoluteTimeGetCurrent() - start) * 1000
+            )
+            let method = endpoint.method.rawValue
+            let desc = error.localizedDescription
+            logger.error(
+                "❌ request \(method) \(endpoint.path) falhou em \(elapsed)ms: \(desc)"
+            )
             throw mapURLError(error)
         }
 

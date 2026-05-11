@@ -13,9 +13,9 @@ struct IngressoPresentationTests {
     @Test("ViewModel inicia em estado idle")
     @MainActor
     func viewModelStartsIdle() {
-        let vm = makeMovieListViewModel()
+        let viewModel = makeMovieListViewModel()
 
-        guard case .idle = vm.viewState else {
+        guard case .idle = viewModel.viewState else {
             Issue.record("Expected idle state")
             return
         }
@@ -26,16 +26,16 @@ struct IngressoPresentationTests {
     func viewModelFetchesMoviesSuccessfully() async {
         let fetchUseCase = MockFetchMoviesUseCase()
         fetchUseCase.result = .success(IngressoFixtures.sampleMovies)
-        let vm = makeMovieListViewModel(fetchUseCase: fetchUseCase)
+        let viewModel = makeMovieListViewModel(fetchUseCase: fetchUseCase)
 
-        await vm.fetchMovies()
+        await viewModel.fetchMovies()
 
-        guard case .loaded(let movies) = vm.viewState else {
+        guard case .loaded(let movies) = viewModel.viewState else {
             Issue.record("Expected loaded state")
             return
         }
         #expect(movies.count == 3)
-        #expect(vm.filteredMovies.count == 3)
+        #expect(viewModel.filteredMovies.count == 3)
     }
 
     @Test("ViewModel filtra filmes em pré-venda")
@@ -43,12 +43,12 @@ struct IngressoPresentationTests {
     func viewModelFiltersPreSaleMovies() async {
         let fetchUseCase = MockFetchMoviesUseCase()
         fetchUseCase.result = .success(IngressoFixtures.sampleMovies)
-        let vm = makeMovieListViewModel(fetchUseCase: fetchUseCase)
+        let viewModel = makeMovieListViewModel(fetchUseCase: fetchUseCase)
 
-        await vm.fetchMovies()
+        await viewModel.fetchMovies()
 
-        #expect(vm.preSaleMovies.count == 1)
-        #expect(vm.preSaleMovies[0].title == "Mortal Kombat 2")
+        #expect(viewModel.preSaleMovies.count == 1)
+        #expect(viewModel.preSaleMovies[0].title == "Mortal Kombat 2")
     }
 
     @Test("ViewModel entra em estado de erro quando fetch falha")
@@ -56,11 +56,11 @@ struct IngressoPresentationTests {
     func viewModelSetsErrorStateOnFailure() async {
         let fetchUseCase = MockFetchMoviesUseCase()
         fetchUseCase.result = .failure(IngressoNetworkError.noConnection)
-        let vm = makeMovieListViewModel(fetchUseCase: fetchUseCase)
+        let viewModel = makeMovieListViewModel(fetchUseCase: fetchUseCase)
 
-        await vm.fetchMovies()
+        await viewModel.fetchMovies()
 
-        guard case .error(let error) = vm.viewState else {
+        guard case .error(let error) = viewModel.viewState else {
             Issue.record("Expected error state")
             return
         }
@@ -73,14 +73,14 @@ struct IngressoPresentationTests {
     @MainActor
     func favoritesViewModelToggles() async {
         let repo = MockFavoritesRepository()
-        let vm = FavoritesViewModel(repository: repo)
+        let viewModel = FavoritesViewModel(repository: repo)
         let movie = IngressoFixtures.makeMovie(id: "1")
 
-        vm.toggle(movie)
-        #expect(vm.isFavorite(movie) == true)
+        viewModel.toggle(movie)
+        #expect(viewModel.isFavorite(movie) == true)
 
-        vm.toggle(movie)
-        #expect(vm.isFavorite(movie) == false)
+        viewModel.toggle(movie)
+        #expect(viewModel.isFavorite(movie) == false)
     }
 
     // MARK: - Helpers
@@ -91,9 +91,9 @@ struct IngressoPresentationTests {
         searchUseCase: MockSearchMoviesUseCase? = nil
     ) -> MovieListViewModel {
         let search = searchUseCase ?? {
-            let s = MockSearchMoviesUseCase()
-            s.result = []
-            return s
+            let mock = MockSearchMoviesUseCase()
+            mock.result = []
+            return mock
         }()
         return MovieListViewModel(fetchMoviesUseCase: fetchUseCase, searchMoviesUseCase: search)
     }

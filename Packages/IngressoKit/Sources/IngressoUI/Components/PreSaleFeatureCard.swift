@@ -50,6 +50,12 @@ struct PreSaleFeatureCard: View {
 }
 
 #Preview {
-    PreSaleFeatureCard(movie: IngressoFixtures.makeMovie(title: "Thunderbolts", genres: ["Ação", "Aventura"], inPreSale: true))
+    PreSaleFeatureCard(
+        movie: IngressoFixtures.makeMovie(
+            title: "Thunderbolts",
+            genres: ["Ação", "Aventura"],
+            inPreSale: true
+        )
+    )
         .padding()
 }

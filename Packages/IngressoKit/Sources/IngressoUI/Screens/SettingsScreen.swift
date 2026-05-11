@@ -1,7 +1,9 @@
+// swiftlint:disable file_length
 import SwiftUI
 import IngressoPresentation
 import IngressoMock
 
+// swiftlint:disable:next type_body_length
 public struct SettingsScreen: View {
     let viewModel: SettingsViewModel
 
@@ -40,7 +42,10 @@ public struct SettingsScreen: View {
                 VStack(spacing: IngressoSpacing.xs) {
                     Text("Ingresso Challenge")
                         .font(.title2.bold())
-                    Text("App iOS que consome a API pública da Ingresso.com para exibir os próximos filmes em cartaz nos cinemas brasileiros.")
+                    Text(
+                        "App iOS que consome a API pública da Ingresso.com "
+                        + "para exibir os próximos filmes em cartaz nos cinemas brasileiros."
+                    )
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -66,7 +71,10 @@ public struct SettingsScreen: View {
         } header: {
             Label("Clean Architecture", systemImage: "building.columns.fill")
         } footer: {
-            Text("7 módulos SPM. Regra de dependência: camadas externas dependem das internas. Domain e Infrastructure não dependem de nada interno.")
+            Text(
+                "7 módulos SPM. Regra de dependência: camadas externas dependem das internas. "
+                + "Domain e Infrastructure não dependem de nada interno."
+            )
         }
     }
 
@@ -162,14 +170,46 @@ public struct SettingsScreen: View {
 
     private var patternsSection: some View {
         Section {
-            patternRow(name: "Repository", where: "Domain → Data", detail: "Protocol no Domain, implementação concreta no Data")
-            patternRow(name: "Use Case", where: "Domain", detail: "Orquestra repositórios, cache e sorting")
-            patternRow(name: "Strategy", where: "Domain", detail: "PremiereDateSortStrategy para ordenação extensível")
-            patternRow(name: "MVVM", where: "Presentation", detail: "@Observable ViewModels com states tipados")
-            patternRow(name: "Router", where: "Presentation", detail: "Per-tab NavigationPath, sheet, fullScreenCover")
-            patternRow(name: "Mapper/Adapter", where: "Data", detail: "DTO → Domain, Entity ↔ Domain bidirecional")
-            patternRow(name: "Factory", where: "Presentation → App", detail: "ViewModelFactoryProtocol → DependencyContainer")
-            patternRow(name: "Composition Root", where: "App", detail: "IngressoDependencyContainer injeta tudo")
+            patternRow(
+                name: "Repository",
+                where: "Domain → Data",
+                detail: "Protocol no Domain, implementação concreta no Data"
+            )
+            patternRow(
+                name: "Use Case",
+                where: "Domain",
+                detail: "Orquestra repositórios, cache e sorting"
+            )
+            patternRow(
+                name: "Strategy",
+                where: "Domain",
+                detail: "PremiereDateSortStrategy para ordenação extensível"
+            )
+            patternRow(
+                name: "MVVM",
+                where: "Presentation",
+                detail: "@Observable ViewModels com states tipados"
+            )
+            patternRow(
+                name: "Router",
+                where: "Presentation",
+                detail: "Per-tab NavigationPath, sheet, fullScreenCover"
+            )
+            patternRow(
+                name: "Mapper/Adapter",
+                where: "Data",
+                detail: "DTO → Domain, Entity ↔ Domain bidirecional"
+            )
+            patternRow(
+                name: "Factory",
+                where: "Presentation → App",
+                detail: "ViewModelFactoryProtocol → DependencyContainer"
+            )
+            patternRow(
+                name: "Composition Root",
+                where: "App",
+                detail: "IngressoDependencyContainer injeta tudo"
+            )
         } header: {
             Label("Design Patterns", systemImage: "puzzlepiece.fill")
         }
@@ -199,14 +239,46 @@ public struct SettingsScreen: View {
 
     private var featuresSection: some View {
         Section {
-            featureRow(icon: "film", title: "Estreias", desc: "Hero banner, seções por gênero, shimmer loading, pull-to-refresh")
-            featureRow(icon: "ticket.fill", title: "Pré-venda", desc: "Cards com banner, gradient overlay, badge de destaque")
-            featureRow(icon: "magnifyingglass", title: "Busca", desc: "Cards de categorias, filtro por título, diretor e gênero")
-            featureRow(icon: "heart.fill", title: "Favoritos", desc: "Grid de posters, persistência SwiftData, toggle instantâneo")
-            featureRow(icon: "square.text.square", title: "Detalhe", desc: "Banner, badges de classificação, FlowLayout de gêneros, trailers")
-            featureRow(icon: "widget.small", title: "Widget", desc: "3 tamanhos (small, medium, large), imagens pré-carregadas")
-            featureRow(icon: "wifi.slash", title: "Offline", desc: "Cache SwiftData com fallback automático, StatusBanner de conectividade")
-            featureRow(icon: "arrow.clockwise", title: "Retry", desc: "Backoff exponencial no HTTPClient, erros tipados com isRetryable")
+            featureRow(
+                icon: "film",
+                title: "Estreias",
+                desc: "Hero banner, seções por gênero, shimmer loading, pull-to-refresh"
+            )
+            featureRow(
+                icon: "ticket.fill",
+                title: "Pré-venda",
+                desc: "Cards com banner, gradient overlay, badge de destaque"
+            )
+            featureRow(
+                icon: "magnifyingglass",
+                title: "Busca",
+                desc: "Cards de categorias, filtro por título, diretor e gênero"
+            )
+            featureRow(
+                icon: "heart.fill",
+                title: "Favoritos",
+                desc: "Grid de posters, persistência SwiftData, toggle instantâneo"
+            )
+            featureRow(
+                icon: "square.text.square",
+                title: "Detalhe",
+                desc: "Banner, badges de classificação, FlowLayout de gêneros, trailers"
+            )
+            featureRow(
+                icon: "widget.small",
+                title: "Widget",
+                desc: "3 tamanhos (small, medium, large), imagens pré-carregadas"
+            )
+            featureRow(
+                icon: "wifi.slash",
+                title: "Offline",
+                desc: "Cache SwiftData com fallback automático, StatusBanner de conectividade"
+            )
+            featureRow(
+                icon: "arrow.clockwise",
+                title: "Retry",
+                desc: "Backoff exponencial no HTTPClient, erros tipados com isRetryable"
+            )
         } header: {
             Label("Funcionalidades", systemImage: "star.fill")
         }
@@ -352,13 +424,41 @@ public struct SettingsScreen: View {
 
     private var phasesSection: some View {
         Section {
-            phaseRow(number: 1, title: "Estrutura do Projeto", desc: "Workspace, SPM multi-target, git flow com feature branches")
-            phaseRow(number: 2, title: "Camada de Infraestrutura", desc: "HTTPClient (actor), IngressoEndpoint, IngressoNetworkError, SwiftData entities")
-            phaseRow(number: 3, title: "Camada de Domínio", desc: "Entidades, protocolos de repositório, use cases, strategy de ordenação")
-            phaseRow(number: 4, title: "Camada de Dados", desc: "DTOs, MovieMapper, RemoteMovieRepository, repositórios SwiftData")
-            phaseRow(number: 5, title: "Camada de Apresentação", desc: "ViewModels @Observable, IngressoViewState, Router, Factory")
-            phaseRow(number: 6, title: "Camada de UI e Mocks", desc: "Todas as telas, componentes reutilizáveis, mocks para previews e testes")
-            phaseRow(number: 7, title: "Widget Extension", desc: "WidgetKit com 3 tamanhos, timeline provider, imagens pré-carregadas")
+            phaseRow(
+                number: 1,
+                title: "Estrutura do Projeto",
+                desc: "Workspace, SPM multi-target, git flow com feature branches"
+            )
+            phaseRow(
+                number: 2,
+                title: "Camada de Infraestrutura",
+                desc: "HTTPClient (actor), IngressoEndpoint, IngressoNetworkError, SwiftData entities"
+            )
+            phaseRow(
+                number: 3,
+                title: "Camada de Domínio",
+                desc: "Entidades, protocolos de repositório, use cases, strategy de ordenação"
+            )
+            phaseRow(
+                number: 4,
+                title: "Camada de Dados",
+                desc: "DTOs, MovieMapper, RemoteMovieRepository, repositórios SwiftData"
+            )
+            phaseRow(
+                number: 5,
+                title: "Camada de Apresentação",
+                desc: "ViewModels @Observable, IngressoViewState, Router, Factory"
+            )
+            phaseRow(
+                number: 6,
+                title: "Camada de UI e Mocks",
+                desc: "Todas as telas, componentes reutilizáveis, mocks para previews e testes"
+            )
+            phaseRow(
+                number: 7,
+                title: "Widget Extension",
+                desc: "WidgetKit com 3 tamanhos, timeline provider, imagens pré-carregadas"
+            )
         } header: {
             Label("Roteiro de Desenvolvimento", systemImage: "calendar.badge.clock")
         } footer: {
@@ -387,6 +487,9 @@ public struct SettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        SettingsScreen(viewModel: IngressoPresentationFactory().makeSettingsViewModel(cacheRepository: MockMovieCacheRepository()))
+        SettingsScreen(
+            viewModel: IngressoPresentationFactory()
+                .makeSettingsViewModel(cacheRepository: MockMovieCacheRepository())
+        )
     }
 }
