@@ -21,15 +21,15 @@ struct FetchMoviesUseCase: FetchMoviesUseCaseProtocol {
         do {
             let movies = try await repository.fetchComingSoonMovies()
             let sorted = sortStrategy.sort(movies)
-            logger.info("✓ \(sorted.count) filmes carregados da API")
+            logger.info("🎬 \(sorted.count) filmes carregados da API")
             try? await cache?.saveMovies(sorted)
             return sorted
         } catch {
             if let cached = try? await cache?.loadCachedMovies(), !cached.isEmpty {
-                logger.warning("⚠ API indisponível, usando \(cached.count) filmes do cache")
+                logger.warning("⚠️ API indisponível, usando \(cached.count) filmes do cache")
                 return cached
             }
-            logger.error("✗ Falha ao buscar filmes: \(error.localizedDescription)")
+            logger.error("❌ falha ao buscar filmes: \(error.localizedDescription)")
             throw error
         }
     }

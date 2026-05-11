@@ -36,7 +36,7 @@ actor IngressoHTTPClient: HTTPClientProtocol {
             if attempt > 0 {
                 let delay = UInt64(pow(2.0, Double(attempt - 1))) * 1_000_000_000
                 try await Task.sleep(nanoseconds: delay)
-                logger.debug("↻ retry \(attempt)/\(self.maxRetries) \(endpoint.path)")
+                logger.debug("🌐 retry \(attempt)/\(self.maxRetries) \(endpoint.path)")
             }
 
             do {
@@ -55,13 +55,19 @@ actor IngressoHTTPClient: HTTPClientProtocol {
         endpoint: IngressoEndpoint,
         as type: T.Type
     ) async throws -> T {
-        logger.debug("→ \(endpoint.method.rawValue) \(endpoint.path)")
+        let url = urlRequest.url?.absoluteString ?? "?"
+        let bodySize = urlRequest.httpBody?.count ?? 0
+        let headers = urlRequest.allHTTPHeaderFields ?? [:]
+        logger.info("🌐 request \(endpoint.method.rawValue) \(url) headers=\(headers.count) body=\(bodySize)B")
 
+        let start = CFAbsoluteTimeGetCurrent()
         let data: Data
         let response: URLResponse
         do {
             (data, response) = try await session.data(for: urlRequest)
         } catch let error as URLError {
+            let elapsed = String(format: "%.0f", (CFAbsoluteTimeGetCurrent() - start) * 1000)
+            logger.error("❌ request \(endpoint.method.rawValue) \(endpoint.path) falhou em \(elapsed)ms: \(error.localizedDescription)")
             throw mapURLError(error)
         }
 
@@ -69,16 +75,19 @@ actor IngressoHTTPClient: HTTPClientProtocol {
             throw IngressoNetworkError.unknown(statusCode: 0)
         }
 
-        logger.debug("← \(httpResponse.statusCode) \(endpoint.path)")
+        let elapsed = String(format: "%.0f", (CFAbsoluteTimeGetCurrent() - start) * 1000)
+        logger.info("🌐 response \(httpResponse.statusCode) \(endpoint.path) \(data.count)B em \(elapsed)ms")
 
         let statusCode = httpResponse.statusCode
         guard (200...299).contains(statusCode) else {
+            logger.warning("⚠️ HTTP \(statusCode) \(endpoint.path)")
             throw mapStatusCode(statusCode)
         }
 
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
+            logger.error("❌ decode falhou \(endpoint.path): \(error.localizedDescription)")
             throw IngressoNetworkError.decodingFailed
         }
     }

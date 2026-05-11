@@ -6,6 +6,7 @@ import IngressoMock
 
 public struct FavoritesScreen: View {
     @Bindable var viewModel: FavoritesViewModel
+    @Environment(IngressoRouter.self) private var router
 
     init(viewModel: FavoritesViewModel) {
         self.viewModel = viewModel
@@ -23,7 +24,9 @@ public struct FavoritesScreen: View {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: IngressoSpacing.md)], spacing: IngressoSpacing.lg) {
                         ForEach(viewModel.favorites) { movie in
-                            NavigationLink(value: IngressoRoute.movieDetail(movie)) {
+                            Button {
+                                router.navigate(to: .movieDetail(movie))
+                            } label: {
                                 MoviePosterCard(movie: movie)
                             }
                             .buttonStyle(.plain)

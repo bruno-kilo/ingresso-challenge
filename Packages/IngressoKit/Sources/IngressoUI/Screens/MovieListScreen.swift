@@ -6,6 +6,7 @@ import IngressoMock
 
 public struct MovieListScreen: View {
     @Bindable var viewModel: MovieListViewModel
+    @Environment(IngressoRouter.self) private var router
 
     init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
@@ -138,7 +139,9 @@ public struct MovieListScreen: View {
     private var fullBrowseContent: some View {
         Group {
             if let featured = viewModel.filteredMovies.first(where: { $0.inPreSale }) ?? viewModel.filteredMovies.first {
-                NavigationLink(value: IngressoRoute.movieDetail(featured)) {
+                Button {
+                    router.navigate(to: .movieDetail(featured))
+                } label: {
                     HeroBanner(movie: featured)
                 }
                 .buttonStyle(.plain)
@@ -186,7 +189,9 @@ public struct MovieListScreen: View {
 
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: IngressoSpacing.md)], spacing: IngressoSpacing.lg) {
                 ForEach(displayedMovies) { movie in
-                    NavigationLink(value: IngressoRoute.movieDetail(movie)) {
+                    Button {
+                        router.navigate(to: .movieDetail(movie))
+                    } label: {
                         MoviePosterCard(movie: movie)
                     }
                     .buttonStyle(.plain)
@@ -204,7 +209,9 @@ public struct MovieListScreen: View {
 
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: IngressoSpacing.md)], spacing: IngressoSpacing.lg) {
                 ForEach(viewModel.filteredMovies) { movie in
-                    NavigationLink(value: IngressoRoute.movieDetail(movie)) {
+                    Button {
+                        router.navigate(to: .movieDetail(movie))
+                    } label: {
                         MoviePosterCard(movie: movie)
                     }
                     .buttonStyle(.plain)

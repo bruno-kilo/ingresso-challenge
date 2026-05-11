@@ -17,26 +17,24 @@ final class SwiftDataMovieCacheRepository: MovieCacheRepositoryProtocol, @unchec
 
         let existingDescriptor = FetchDescriptor<CachedMovieEntity>()
         let existing = try context.fetch(existingDescriptor)
-        let existingIds = Set(existing.map(\.movieId))
+        let entityMap = Dictionary(uniqueKeysWithValues: existing.map { ($0.movieId, $0) })
         let newIds = Set(movies.map(\.id))
 
         for entity in existing where !newIds.contains(entity.movieId) {
             context.delete(entity)
         }
 
-        for movie in movies where !existingIds.contains(movie.id) {
-            context.insert(CachedMovieMapper.toEntity(movie))
-        }
-
-        for movie in movies where existingIds.contains(movie.id) {
-            if let entity = existing.first(where: { $0.movieId == movie.id }) {
+        for movie in movies {
+            if let entity = entityMap[movie.id] {
                 MovieEntityMapper.updateEntity(entity, from: movie)
                 entity.cachedAt = Date()
+            } else {
+                context.insert(CachedMovieMapper.toEntity(movie))
             }
         }
 
         try context.save()
-        logger.info("Cache atualizado: \(movies.count) filmes")
+        logger.info("🗄️ cache salvo: \(movies.count) filmes")
     }
 
     func loadCachedMovies() async throws -> [IngressoMovie] {
@@ -56,6 +54,6 @@ final class SwiftDataMovieCacheRepository: MovieCacheRepositoryProtocol, @unchec
             context.delete(entity)
         }
         try context.save()
-        logger.info("Cache limpo: \(entities.count) filmes removidos")
+        logger.info("🗄️ cache limpo: \(entities.count) filmes removidos")
     }
 }

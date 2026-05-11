@@ -6,6 +6,7 @@ import IngressoMock
 
 public struct SearchScreen: View {
     @Bindable var viewModel: MovieListViewModel
+    @Environment(IngressoRouter.self) private var router
 
     init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
@@ -53,7 +54,9 @@ public struct SearchScreen: View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: IngressoSpacing.md)], spacing: IngressoSpacing.lg) {
                 ForEach(viewModel.filteredMovies) { movie in
-                    NavigationLink(value: IngressoRoute.movieDetail(movie)) {
+                    Button {
+                        router.navigate(to: .movieDetail(movie))
+                    } label: {
                         MoviePosterCard(movie: movie)
                     }
                     .buttonStyle(.plain)

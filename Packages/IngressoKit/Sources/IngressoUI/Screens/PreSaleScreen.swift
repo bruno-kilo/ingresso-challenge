@@ -6,6 +6,7 @@ import IngressoMock
 
 public struct PreSaleScreen: View {
     @Bindable var viewModel: MovieListViewModel
+    @Environment(IngressoRouter.self) private var router
 
     init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
@@ -71,7 +72,9 @@ public struct PreSaleScreen: View {
 
                 LazyVStack(spacing: IngressoSpacing.lg) {
                     ForEach(Array(viewModel.preSaleMovies.enumerated()), id: \.element.id) { index, movie in
-                        NavigationLink(value: IngressoRoute.movieDetail(movie)) {
+                        Button {
+                            router.navigate(to: .movieDetail(movie))
+                        } label: {
                             PreSaleFeatureCard(movie: movie)
                         }
                         .buttonStyle(.plain)

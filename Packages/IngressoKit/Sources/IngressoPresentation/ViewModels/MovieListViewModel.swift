@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import OSLog
 import IngressoDomain
 import IngressoInfrastructure
 
@@ -12,18 +13,18 @@ public final class MovieListViewModel {
     }
     public private(set) var filteredMovies: [IngressoMovie] = []
     public private(set) var preSaleMovies: [IngressoMovie] = []
+    public private(set) var availableGenres: [String] = []
 
-    public var availableGenres: [String] {
-        Array(Set(filteredMovies.flatMap(\.genres))).sorted()
-    }
+    private let logger = Logger(subsystem: "com.brunosantos.Ingresso", category: "MovieList")
 
     public func movies(forGenre genre: String) -> [IngressoMovie] {
         filteredMovies.filter { $0.genres.contains(genre) }
     }
 
     public func movies(forGenres genres: [String]) -> [IngressoMovie] {
-        filteredMovies.filter { movie in
-            genres.contains(where: { movie.genres.contains($0) })
+        let genreSet = Set(genres)
+        return filteredMovies.filter { movie in
+            movie.genres.contains(where: { genreSet.contains($0) })
         }
     }
 
@@ -42,6 +43,7 @@ public final class MovieListViewModel {
 
     public func fetchMoviesIfNeeded() async {
         guard !hasFetched else { return }
+        logger.info("🎬 carregamento inicial")
         await fetchMovies()
     }
 
@@ -56,15 +58,18 @@ public final class MovieListViewModel {
             hasFetched = true
             applySearch()
             viewState = allMovies.isEmpty ? .empty : .loaded(filteredMovies)
+            logger.info("🎬 \(movies.count) filmes carregados, \(self.preSaleMovies.count) em pré-venda")
         } catch {
             if allMovies.isEmpty {
                 let networkError = (error as? IngressoNetworkError) ?? .unknown(statusCode: 0)
                 viewState = .error(networkError)
+                logger.error("❌ erro ao carregar filmes: \(error.localizedDescription)")
             }
         }
     }
 
     public func refresh() async {
+        logger.info("🎬 pull-to-refresh")
         await fetchMovies()
     }
 
@@ -74,6 +79,7 @@ public final class MovieListViewModel {
         } else {
             filteredMovies = searchMoviesUseCase.execute(query: searchQuery, in: allMovies)
         }
+        availableGenres = Array(Set(filteredMovies.flatMap(\.genres))).sorted()
         if case .loaded = viewState {
             viewState = .loaded(filteredMovies)
         }

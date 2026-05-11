@@ -4,6 +4,7 @@ import IngressoPresentation
 import IngressoMock
 
 struct MovieSection: View {
+    @Environment(IngressoRouter.self) private var router
     let title: String
     let movies: [IngressoMovie]
     var showsRank: Bool = false
@@ -17,7 +18,9 @@ struct MovieSection: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: IngressoSpacing.md) {
                     ForEach(Array(movies.enumerated()), id: \.element.id) { index, movie in
-                        NavigationLink(value: IngressoRoute.movieDetail(movie)) {
+                        Button {
+                            router.navigate(to: .movieDetail(movie))
+                        } label: {
                             if showsRank {
                                 rankedCard(movie: movie, rank: index + 1)
                             } else {
@@ -54,4 +57,5 @@ struct MovieSection: View {
     NavigationStack {
         MovieSection(title: "Próximas Estreias", movies: IngressoFixtures.sampleMovies, showsRank: true)
     }
+    .environment(IngressoPresentationFactory().makeRouter())
 }

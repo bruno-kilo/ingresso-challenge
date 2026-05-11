@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import OSLog
 import IngressoDomain
 
 @Observable
@@ -9,24 +10,37 @@ public final class SettingsViewModel {
     public private(set) var isClearing = false
 
     private let cacheRepository: MovieCacheRepositoryProtocol
+    private let logger = Logger(subsystem: "com.brunosantos.Ingresso", category: "Settings")
 
     init(cacheRepository: MovieCacheRepositoryProtocol) {
         self.cacheRepository = cacheRepository
     }
 
     public func loadCacheSize() {
-        Task {
-            let movies = (try? await cacheRepository.loadCachedMovies()) ?? []
-            let data = try? JSONEncoder().encode(movies.map(CodableMovie.init))
-            cacheByteCount = Int64(data?.count ?? 0)
+        Task { @MainActor in
+            do {
+                let movies = try await cacheRepository.loadCachedMovies()
+                let data = try JSONEncoder().encode(movies.map(CodableMovie.init))
+                cacheByteCount = Int64(data.count)
+            } catch {
+                cacheByteCount = 0
+                logger.error("❌ erro ao calcular cache: \(error.localizedDescription)")
+            }
+            logger.info("⚙️ cache: \(self.formattedCacheSize)")
         }
     }
 
     public func clearCache() async {
+        logger.info("⚙️ limpando cache...")
         isClearing = true
-        try? await cacheRepository.clearCache()
+        do {
+            try await cacheRepository.clearCache()
+        } catch {
+            logger.error("❌ erro ao limpar cache: \(error.localizedDescription)")
+        }
         cacheByteCount = 0
         isClearing = false
+        logger.info("⚙️ cache limpo")
     }
 
     public var formattedCacheSize: String {

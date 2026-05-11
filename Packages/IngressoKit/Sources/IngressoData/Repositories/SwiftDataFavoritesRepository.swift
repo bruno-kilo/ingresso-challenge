@@ -18,7 +18,7 @@ final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @unchecke
             sortBy: [SortDescriptor(\.addedAt)]
         )
         let entities = try context.fetch(descriptor)
-        logger.debug("Favoritos carregados: \(entities.count)")
+        logger.debug("🗄️ favoritos carregados: \(entities.count)")
         return entities.map(FavoriteMovieMapper.toDomain)
     }
 
@@ -27,7 +27,7 @@ final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @unchecke
         let entity = FavoriteMovieMapper.toEntity(movie)
         context.insert(entity)
         try context.save()
-        logger.info("★ Favoritado: \(movie.title)")
+        logger.info("🗄️ favoritado: \(movie.title)")
     }
 
     func remove(byId id: String) async throws {
@@ -38,7 +38,7 @@ final class SwiftDataFavoritesRepository: FavoritesRepositoryProtocol, @unchecke
         if let entity = try context.fetch(descriptor).first {
             context.delete(entity)
             try context.save()
-            logger.info("☆ Desfavoritado: \(id)")
+            logger.info("🗄️ desfavoritado: \(id)")
         }
     }
 
