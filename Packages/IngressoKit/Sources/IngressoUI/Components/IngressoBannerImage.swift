@@ -1,5 +1,6 @@
 import SwiftUI
 import IngressoDomain
+import IngressoMock
 
 struct IngressoBannerImage: View {
     let movie: IngressoMovie
@@ -86,4 +87,9 @@ struct IngressoBannerImage: View {
                 .foregroundStyle(.secondary)
         }
     }
+}
+
+#Preview {
+    IngressoBannerImage(movie: IngressoFixtures.makeMovie(title: "Filme Teste"))
+        .padding()
 }

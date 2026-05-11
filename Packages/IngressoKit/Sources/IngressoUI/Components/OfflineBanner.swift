@@ -1,5 +1,6 @@
 import SwiftUI
 import IngressoInfrastructure
+import IngressoMock
 
 struct StatusBanner: View {
     @Environment(NetworkMonitor.self) private var networkMonitor
@@ -69,4 +70,10 @@ struct StatusBanner: View {
         }
         return ""
     }
+}
+
+#Preview {
+    let infraFactory = IngressoInfrastructureFactory()
+    StatusBanner(error: .timeout, retryAction: {})
+        .environment(infraFactory.makeNetworkMonitor())
 }

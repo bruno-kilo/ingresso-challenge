@@ -1,6 +1,7 @@
 import SwiftUI
 import IngressoDomain
 import IngressoPresentation
+import IngressoMock
 
 public struct MovieDetailScreen: View {
     let viewModel: MovieDetailViewModel
@@ -249,4 +250,24 @@ public struct MovieDetailScreen: View {
             }
         }
     }
+}
+
+#Preview {
+    NavigationStack {
+        MovieDetailScreen(
+            viewModel: IngressoPresentationFactory().makeMovieDetailViewModel(
+                movie: IngressoFixtures.makeMovie(
+                    title: "Mortal Kombat 2",
+                    synopsis: "Os heróis do Reino da Terra lutam para salvar o universo.",
+                    cast: "Lewis Tan, Jessica McNamee",
+                    director: "Simon McQuoid",
+                    genres: ["Ação", "Fantasia", "Aventura"],
+                    inPreSale: true,
+                    trailers: [IngressoTrailer(type: "Trailer Oficial", url: URL(string: "https://youtube.com/watch?v=test")!, embeddedURL: nil)],
+                    ratingDescriptors: ["Violência", "Linguagem imprópria"]
+                )
+            )
+        )
+    }
+    .environment(IngressoPresentationFactory().makeFavoritesViewModel(repository: MockFavoritesRepository()))
 }

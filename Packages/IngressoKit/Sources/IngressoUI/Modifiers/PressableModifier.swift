@@ -19,3 +19,11 @@ extension View {
         modifier(PressableModifier(scale: scale))
     }
 }
+
+#Preview {
+    RoundedRectangle(cornerRadius: 12)
+        .fill(.blue.gradient)
+        .frame(width: 140, height: 210)
+        .pressable()
+        .padding()
+}

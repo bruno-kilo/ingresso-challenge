@@ -2,6 +2,7 @@ import SwiftUI
 import IngressoDomain
 import IngressoInfrastructure
 import IngressoPresentation
+import IngressoMock
 
 public struct PreSaleScreen: View {
     @Bindable var viewModel: MovieListViewModel
@@ -67,7 +68,7 @@ public struct PreSaleScreen: View {
     private var preSaleContent: some View {
         ScrollView {
             VStack(spacing: IngressoSpacing.lg) {
-                
+
                 LazyVStack(spacing: IngressoSpacing.lg) {
                     ForEach(Array(viewModel.preSaleMovies.enumerated()), id: \.element.id) { index, movie in
                         NavigationLink(value: IngressoRoute.movieDetail(movie)) {
@@ -81,5 +82,25 @@ public struct PreSaleScreen: View {
             }
         }
     }
+}
 
+#Preview {
+    @Previewable @State var vm: MovieListViewModel = {
+        let fetchUseCase = MockFetchMoviesUseCase()
+        fetchUseCase.result = .success([
+            IngressoFixtures.makeMovie(id: "1", title: "Mortal Kombat 2", inPreSale: true),
+            IngressoFixtures.makeMovie(id: "2", title: "Thunderbolts", inPreSale: true),
+        ])
+        return IngressoPresentationFactory().makeMovieListViewModel(
+            fetchMoviesUseCase: fetchUseCase,
+            searchMoviesUseCase: MockSearchMoviesUseCase()
+        )
+    }()
+
+    NavigationStack {
+        PreSaleScreen(viewModel: vm)
+    }
+    .environment(IngressoPresentationFactory().makeRouter())
+    .environment(IngressoInfrastructureFactory().makeNetworkMonitor())
+    .environment(IngressoPresentationFactory().makeFavoritesViewModel(repository: MockFavoritesRepository()))
 }

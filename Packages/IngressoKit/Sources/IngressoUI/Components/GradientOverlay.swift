@@ -36,3 +36,11 @@ struct GradientOverlay: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.blue
+        GradientOverlay(style: .bottomFade)
+    }
+    .frame(height: 200)
+}

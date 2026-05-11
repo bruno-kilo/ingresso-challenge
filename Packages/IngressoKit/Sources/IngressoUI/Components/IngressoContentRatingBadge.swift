@@ -1,5 +1,6 @@
 import SwiftUI
 import IngressoDomain
+import IngressoMock
 
 struct IngressoContentRatingBadge: View {
     let rating: IngressoContentRating
@@ -12,4 +13,10 @@ struct IngressoContentRatingBadge: View {
             .padding(.vertical, IngressoSpacing.xxs)
             .background(Color(hex: rating.color), in: RoundedRectangle(cornerRadius: IngressoSpacing.xs))
     }
+}
+
+#Preview {
+    let rating = IngressoFixtures.makeMovie().contentRating!
+    IngressoContentRatingBadge(rating: rating)
+        .padding()
 }

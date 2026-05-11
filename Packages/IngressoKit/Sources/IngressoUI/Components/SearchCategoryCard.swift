@@ -67,3 +67,12 @@ struct SearchCategoryCard: View {
         .pressable()
     }
 }
+
+#Preview {
+    VStack {
+        SearchCategoryCard(category: .action)
+        SearchCategoryCard(category: .comedy)
+        SearchCategoryCard(category: .horror)
+    }
+    .padding()
+}

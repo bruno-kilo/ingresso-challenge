@@ -1,6 +1,8 @@
 import SwiftUI
 import IngressoDomain
+import IngressoInfrastructure
 import IngressoPresentation
+import IngressoMock
 
 public struct FavoritesScreen: View {
     @Bindable var viewModel: FavoritesViewModel
@@ -38,4 +40,19 @@ public struct FavoritesScreen: View {
         .navigationTitle("Favoritos")
         .task { await viewModel.loadFavorites() }
     }
+}
+
+#Preview {
+    @Previewable @State var vm: FavoritesViewModel = {
+        let repo = MockFavoritesRepository()
+        repo.movies = IngressoFixtures.sampleMovies
+        return IngressoPresentationFactory().makeFavoritesViewModel(repository: repo)
+    }()
+
+    NavigationStack {
+        FavoritesScreen(viewModel: vm)
+    }
+    .environment(IngressoPresentationFactory().makeRouter())
+    .environment(IngressoInfrastructureFactory().makeNetworkMonitor())
+    .environment(vm)
 }

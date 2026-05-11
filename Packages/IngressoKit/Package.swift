@@ -36,10 +36,10 @@ let package = Package(
             dependencies: ["IngressoDomain", "IngressoInfrastructure"]
         ),
 
-        // MARK: - UI (Domain + Presentation + Infrastructure)
+        // MARK: - UI (Domain + Presentation + Infrastructure + Mock)
         .target(
                     name: "IngressoUI",
-                    dependencies: ["IngressoDomain", "IngressoPresentation", "IngressoInfrastructure"]
+                    dependencies: ["IngressoDomain", "IngressoPresentation", "IngressoInfrastructure", "IngressoMock"]
                 ),
 
         // MARK: - Mock (all layers)

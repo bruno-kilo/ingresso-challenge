@@ -26,3 +26,23 @@ extension View {
         modifier(AppearAnimationModifier(delay: delay, offsetY: 0, offsetX: 30))
     }
 }
+
+#Preview {
+    VStack(spacing: 16) {
+        RoundedRectangle(cornerRadius: 12)
+            .fill(.blue.gradient)
+            .frame(height: 60)
+            .appearAnimation(delay: 0)
+
+        RoundedRectangle(cornerRadius: 12)
+            .fill(.green.gradient)
+            .frame(height: 60)
+            .appearAnimation(delay: 0.2)
+
+        RoundedRectangle(cornerRadius: 12)
+            .fill(.orange.gradient)
+            .frame(height: 60)
+            .appearFromRight(delay: 0.4)
+    }
+    .padding()
+}

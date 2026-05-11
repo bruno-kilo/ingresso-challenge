@@ -1,5 +1,6 @@
 import SwiftUI
 import IngressoDomain
+import IngressoMock
 
 struct PreSaleFeatureCard: View {
     let movie: IngressoMovie
@@ -46,4 +47,9 @@ struct PreSaleFeatureCard: View {
         .shadow(color: .black.opacity(0.2), radius: 8, y: 4)
         .pressable(scale: 0.97)
     }
+}
+
+#Preview {
+    PreSaleFeatureCard(movie: IngressoFixtures.makeMovie(title: "Thunderbolts", genres: ["Ação", "Aventura"], inPreSale: true))
+        .padding()
 }

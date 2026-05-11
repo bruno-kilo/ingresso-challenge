@@ -10,3 +10,9 @@ struct IngressoPreSaleBadge: View {
             .glassEffect(.regular, in: .capsule)
     }
 }
+
+#Preview {
+    IngressoPreSaleBadge()
+        .padding()
+        .background(.black)
+}

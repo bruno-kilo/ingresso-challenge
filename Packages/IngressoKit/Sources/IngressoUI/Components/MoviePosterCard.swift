@@ -1,5 +1,6 @@
 import SwiftUI
 import IngressoDomain
+import IngressoMock
 
 struct MoviePosterCard: View {
     let movie: IngressoMovie
@@ -36,4 +37,10 @@ struct MoviePosterCard: View {
         }
         .pressable()
     }
+}
+
+#Preview {
+    MoviePosterCard(movie: IngressoFixtures.makeMovie(title: "Filme Teste", inPreSale: true))
+        .frame(width: 140)
+        .padding()
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import IngressoDomain
 import IngressoInfrastructure
 import IngressoPresentation
+import IngressoMock
 
 public struct MovieListScreen: View {
     @Bindable var viewModel: MovieListViewModel
@@ -212,4 +213,22 @@ public struct MovieListScreen: View {
             .padding(.horizontal)
         }
     }
+}
+
+#Preview {
+    @Previewable @State var vm: MovieListViewModel = {
+        let fetchUseCase = MockFetchMoviesUseCase()
+        fetchUseCase.result = .success(IngressoFixtures.sampleMovies)
+        return IngressoPresentationFactory().makeMovieListViewModel(
+            fetchMoviesUseCase: fetchUseCase,
+            searchMoviesUseCase: MockSearchMoviesUseCase()
+        )
+    }()
+
+    NavigationStack {
+        MovieListScreen(viewModel: vm)
+    }
+    .environment(IngressoPresentationFactory().makeRouter())
+    .environment(IngressoInfrastructureFactory().makeNetworkMonitor())
+    .environment(IngressoPresentationFactory().makeFavoritesViewModel(repository: MockFavoritesRepository()))
 }

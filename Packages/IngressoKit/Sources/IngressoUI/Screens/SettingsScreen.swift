@@ -1,5 +1,6 @@
 import SwiftUI
 import IngressoPresentation
+import IngressoMock
 
 public struct SettingsScreen: View {
     let viewModel: SettingsViewModel
@@ -381,5 +382,11 @@ public struct SettingsScreen: View {
             }
         }
         .padding(.vertical, IngressoSpacing.xxs)
+    }
+}
+
+#Preview {
+    NavigationStack {
+        SettingsScreen(viewModel: IngressoPresentationFactory().makeSettingsViewModel(cacheRepository: MockMovieCacheRepository()))
     }
 }

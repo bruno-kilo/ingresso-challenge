@@ -1,6 +1,7 @@
 import SwiftUI
 import IngressoDomain
 import IngressoPresentation
+import IngressoMock
 
 struct MovieSection: View {
     let title: String
@@ -37,7 +38,7 @@ struct MovieSection: View {
         ZStack(alignment: .bottomTrailing) {
             MoviePosterCard(movie: movie)
                 .frame(width: 120)
-            
+
             Text("\(rank)")
                 .font(.system(size: 40, weight: .heavy, design: .rounded))
                 .foregroundStyle(.white)
@@ -46,5 +47,11 @@ struct MovieSection: View {
                 .padding(.trailing, 6)
         }
         .frame(width: 120)
+    }
+}
+
+#Preview {
+    NavigationStack {
+        MovieSection(title: "Próximas Estreias", movies: IngressoFixtures.sampleMovies, showsRank: true)
     }
 }

@@ -38,3 +38,16 @@ struct FlowLayout: Layout {
         return (CGSize(width: maxWidth, height: currentY + lineHeight), positions)
     }
 }
+
+#Preview {
+    FlowLayout(spacing: 8) {
+        ForEach(["Ação", "Aventura", "Ficção Científica", "Drama", "Terror"], id: \.self) { genre in
+            Text(genre)
+                .font(.caption.bold())
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(.ultraThinMaterial, in: Capsule())
+        }
+    }
+    .padding()
+}

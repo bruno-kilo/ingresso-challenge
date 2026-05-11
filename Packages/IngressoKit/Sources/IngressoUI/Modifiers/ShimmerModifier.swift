@@ -27,3 +27,11 @@ extension View {
         modifier(ShimmerModifier())
     }
 }
+
+#Preview {
+    RoundedRectangle(cornerRadius: 12)
+        .fill(.quaternary)
+        .frame(width: 140, height: 210)
+        .shimmer()
+        .padding()
+}

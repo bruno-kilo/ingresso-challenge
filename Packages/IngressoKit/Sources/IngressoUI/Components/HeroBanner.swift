@@ -1,6 +1,7 @@
 import SwiftUI
 import IngressoDomain
 import IngressoPresentation
+import IngressoMock
 
 struct HeroBanner: View {
     let movie: IngressoMovie
@@ -41,4 +42,9 @@ struct HeroBanner: View {
         .shadow(color: .black.opacity(0.3), radius: 12, y: 6)
         .appearAnimation()
     }
+}
+
+#Preview {
+    HeroBanner(movie: IngressoFixtures.makeMovie(title: "Mortal Kombat 2", genres: ["Ação", "Fantasia"], inPreSale: true))
+        .padding()
 }

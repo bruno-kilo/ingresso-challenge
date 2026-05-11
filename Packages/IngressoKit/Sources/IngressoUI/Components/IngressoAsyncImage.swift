@@ -44,3 +44,9 @@ struct IngressoAsyncImage: View {
         .aspectRatio(aspectRatio, contentMode: .fill)
     }
 }
+
+#Preview {
+    IngressoAsyncImage(url: nil)
+        .frame(width: 140)
+        .padding()
+}
